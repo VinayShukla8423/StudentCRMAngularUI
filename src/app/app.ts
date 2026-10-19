@@ -6,7 +6,8 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
+  //  template: '<router-outlet></router-outlet>'
 })
 export class App {
-  protected readonly title = signal('StudentCRM.UI');
+  // protected readonly title = signal('StudentCRM.UI');
 }
