@@ -1,0 +1,66 @@
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">S</div>
+      <div>
+        <h2>Student CRM</h2>
+        <small>Management Portal</small>
+      </div>
+    </div>
+
+    <div class="menu-group">
+      <p>MAIN MENU</p>
+      <a routerLink="/dashboard" routerLinkActive="active">▦ Dashboard</a>
+    </div>
+
+    <div class="menu-group">
+      <p>ACADEMIC MANAGEMENT</p>
+      <a routerLink="/students" routerLinkActive="active">🎓 Students</a>
+      <a routerLink="/teachers" routerLinkActive="active">👨‍🏫 Teachers</a>
+      <a routerLink="/courses" routerLinkActive="active">📚 Courses / Classes</a>
+      <a routerLink="/attendance" routerLinkActive="active">📅 Attendance</a>
+      <a routerLink="/exams" routerLinkActive="active">📝 Exams & Results</a>
+      <a routerLink="/timetable" routerLinkActive="active">🗓️ Timetable</a>
+    </div>
+
+    <div class="menu-group">
+      <p>ADMINISTRATION</p>
+      <a routerLink="/users" routerLinkActive="active">👥 Users</a>
+      <a routerLink="/roles" routerLinkActive="active">🛡️ Roles & Permissions</a>
+      <a routerLink="/fees" routerLinkActive="active">💳 Fees & Payments</a>
+    </div>
+
+    <div class="menu-group">
+      <p>COMMUNICATION</p>
+      <a routerLink="/notices" routerLinkActive="active">🔔 Notices</a>
+      <a routerLink="/messages" routerLinkActive="active">✉️ Messages</a>
+    </div>
+
+    <div class="menu-group">
+      <p>SYSTEM</p>
+      <a routerLink="/reports" routerLinkActive="active">📊 Reports</a>
+      <a routerLink="/settings" routerLinkActive="active">⚙️ Settings</a>
+    </div>
+
+    <button class="logout-btn" type="button" (click)="logout()">↪ Logout
+    </button>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <div>
+        <h3>Education Management</h3>
+        <small>Student CRM / Admin Panel</small>
+      </div>
+      <div class="profile">
+        <span>👤</span>
+        <strong>{{ userName }}</strong>
+      </div>
+    </header>
+
+    <section class="page-content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

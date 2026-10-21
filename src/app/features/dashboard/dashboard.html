@@ -1,1 +1,136 @@
-<p>dashboard works!</p>
+
+<div class="crm-layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <div>
+        <h2>Student CRM</h2>
+        <span>Management Portal</span>
+      </div>
+    </div>
+
+    <p class="menu-label">MAIN MENU</p>
+
+    <nav class="menu">
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <span>▦</span> Dashboard
+      </a>
+      <a routerLink="/students" routerLinkActive="active">
+        <span>🎓</span> Students
+      </a>
+      <a routerLink="/teachers" routerLinkActive="active">
+        <span>👨‍🏫</span> Teachers
+      </a>
+      <a routerLink="/users" routerLinkActive="active">
+        <span>👥</span> Users
+      </a>
+
+      <a routerLink="/courses" routerLinkActive="active">
+  <span>📚</span> Courses / Classes
+</a>
+
+<a routerLink="/attendance" routerLinkActive="active">
+  <span>📅</span> Attendance
+</a>
+
+<a routerLink="/exams" routerLinkActive="active">
+  <span>📝</span> Examinations & Results
+</a>
+
+<a routerLink="/fees" routerLinkActive="active">
+  <span>💳</span> Fees & Payments
+</a>
+
+<a routerLink="/reports" routerLinkActive="active">
+  <span>📊</span> Reports
+</a>
+
+<a routerLink="/settings" routerLinkActive="active">
+  <span>⚙️</span> Settings
+</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="admin-avatar">A</div>
+      <div class="admin-info">
+        <strong>{{ userName }}</strong>
+        <span>Administrator</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div>
+        <h2>Dashboard</h2>
+        <p>Welcome back, {{ userName }}!</p>
+      </div>
+
+      <button class="logout-btn" type="button">
+        /* (click)="logout()"> */
+        Logout
+      </button>
+    </header>
+
+    <section class="welcome-banner">
+      <div>
+        <span class="eyebrow">STUDENT CRM OVERVIEW</span>
+        <h1>Manage your institution smarter.</h1>
+        <p>Monitor students, teachers and users from one place.</p>
+      </div>
+      <div class="welcome-icon">🎓</div>
+    </section>
+
+    <section class="stats-grid">
+      @for (stat of stats; track stat.title) {
+        <article class="stat-card">
+          <div class="stat-icon" [class]="stat.color">
+            {{ stat.icon }}
+          </div>
+          <div>
+            <p>{{ stat.title }}</p>
+            <h2>{{ stat.value }}</h2>
+          </div>
+        </article>
+      }
+    </section>
+
+    <section class="table-card">
+      <div class="section-heading">
+        <div>
+          <h2>Recent Students</h2>
+          <p>Overview of recently added students</p>
+        </div>
+        <a routerLink="/students" class="view-all">View all →</a>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Student Name</th>
+              <th>Class</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (student of recentStudents; track student.id) {
+              <tr>
+                <td>{{ student.id }}</td>
+                <td class="student-name">{{ student.name }}</td>
+                <td>{{ student.className }}</td>
+                <td>
+                  <span class="status"
+                    [class.pending]="student.status === 'Pending'">
+                    {{ student.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>

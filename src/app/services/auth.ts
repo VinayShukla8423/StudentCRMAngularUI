@@ -22,18 +22,30 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<LoginResponse> {
-    debugger;
+  login(payload:any): Observable<LoginResponse> {
+   debugger;
     return this.http.post<LoginResponse>(
       `${this.apiUrl}/login`,
-      { email, password }
+      payload
     ).pipe(
       tap(response => {
-        debugger;
+    
         localStorage.setItem('token', response.token);
         localStorage.setItem('userName', response.userName);
         localStorage.setItem('role', response.role);
       })
     );
+  }
+
+   getToken(): string | null {
+        return localStorage.getItem('token');
+  }
+
+
+  logout(): void 
+  {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('role');
   }
 }

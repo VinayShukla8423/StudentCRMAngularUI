@@ -6,31 +6,18 @@
 
     <form (ngSubmit)="onLogin()">
       <label for="email">Email</label>
-      <input
-        id="email"
-        type="email"
-        name="email"
-        [(ngModel)]="email"
-        placeholder="Enter your email"
-        required
-      />
+      <input id="email" type="email" name="email"[(ngModel)]="email"placeholder="Enter your email" required />
 
       <label for="password">Password</label>
       <input
-        id="password"
-        type="password"
-        name="password"
-        [(ngModel)]="password"
-        placeholder="Enter your password"
-        required
-      />
+        id="password" type="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required />
 
       <p *ngIf="errorMessage" class="error">
         {{ errorMessage }}
       </p>
 
-      <button type="submit" [disabled]="isLoading">
-        {{ isLoading ? 'Logging in...' : 'Login' }}
+      <button type="submit">
+      Login
       </button>
     </form>
   </div>
