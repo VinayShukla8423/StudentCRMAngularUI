@@ -1,1 +1,145 @@
-<p>users works!</p>
+
+<div class="users-page">
+  <div class="page-header">
+    <div>
+      <h2>User Management</h2>
+      <p>Manage users, roles and account status.</p>
+    </div>
+
+    <button class="refresh-btn" (click)="loadUsers()">
+      Refresh
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <span>Total Users</span>
+      <h3>{{ users.length }}</h3>
+    </div>
+
+    <div class="stat-card">
+      <span>Active Users</span>
+      <h3>{{ users.filter(u => u.isActive).length }}</h3>
+    </div>
+
+    <div class="stat-card">
+      <span>Inactive Users</span>
+      <h3>{{ users.filter(u => !u.isActive).length }}</h3>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Search username, email or role..."
+      aria-label="Search users"
+    />
+  </div>
+
+  <div *ngIf="successMessage" class="alert success">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Loading users...
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <ng-container *ngIf="editingId !== user.id; else editRow">
+            <td>{{ user.userName }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <span class="role-badge">{{ user.roleName }}</span>
+            </td>
+            <td>
+              <span
+                class="status"
+                [class.active]="user.isActive"
+                [class.inactive]="!user.isActive">
+                {{ user.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>{{ user.createdAt | date:'dd MMM yyyy' }}</td>
+            <td class="actions">
+              <button class="edit-btn" (click)="startEdit(user)">
+                Edit
+              </button>
+              <button class="delete-btn" (click)="deleteUser(user)">
+                Delete
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-template #editRow>
+            <td>
+              <input
+                [(ngModel)]="editForm.userName"
+                aria-label="Username"
+              />
+            </td>
+            <td>
+              <input
+                type="email"
+                [(ngModel)]="editForm.email"
+                aria-label="Email"
+              />
+            </td>
+            <td>
+              <select [(ngModel)]="selectedRoleId" aria-label="Role">
+                <option *ngFor="let role of roles" [value]="role.id">
+                  {{ role.name }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <label class="active-toggle">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="editForm.isActive"
+                />
+                {{ editForm.isActive ? 'Active' : 'Inactive' }}
+              </label>
+            </td>
+            <td>{{ user.createdAt | date:'dd MMM yyyy' }}</td>
+            <td class="actions">
+              <button class="save-btn" (click)="saveUser(user)">
+                Save
+              </button>
+              <button class="cancel-btn" (click)="cancelEdit()">
+                Cancel
+              </button>
+            </td>
+          </ng-template>
+        </tr>
+
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="6" class="empty">
+            No users found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- <h3>{{ users.length }}</h3>
+<h3>{{ activeUsers }}</h3>
+<h3>{{ inactiveUsers }}</h3> -->

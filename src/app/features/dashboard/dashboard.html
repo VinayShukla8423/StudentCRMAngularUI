@@ -1,63 +1,5 @@
 
 <div class="crm-layout">
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-icon">S</div>
-      <div>
-        <h2>Student CRM</h2>
-        <span>Management Portal</span>
-      </div>
-    </div>
-
-    <p class="menu-label">MAIN MENU</p>
-
-    <nav class="menu">
-      <a routerLink="/dashboard" routerLinkActive="active">
-        <span>▦</span> Dashboard
-      </a>
-      <a routerLink="/students" routerLinkActive="active">
-        <span>🎓</span> Students
-      </a>
-      <a routerLink="/teachers" routerLinkActive="active">
-        <span>👨‍🏫</span> Teachers
-      </a>
-      <a routerLink="/users" routerLinkActive="active">
-        <span>👥</span> Users
-      </a>
-
-      <a routerLink="/courses" routerLinkActive="active">
-  <span>📚</span> Courses / Classes
-</a>
-
-<a routerLink="/attendance" routerLinkActive="active">
-  <span>📅</span> Attendance
-</a>
-
-<a routerLink="/exams" routerLinkActive="active">
-  <span>📝</span> Examinations & Results
-</a>
-
-<a routerLink="/fees" routerLinkActive="active">
-  <span>💳</span> Fees & Payments
-</a>
-
-<a routerLink="/reports" routerLinkActive="active">
-  <span>📊</span> Reports
-</a>
-
-<a routerLink="/settings" routerLinkActive="active">
-  <span>⚙️</span> Settings
-</a>
-    </nav>
-
-    <div class="sidebar-bottom">
-      <div class="admin-avatar">A</div>
-      <div class="admin-info">
-        <strong>{{ userName }}</strong>
-        <span>Administrator</span>
-      </div>
-    </div>
-  </aside>
 
   <main class="main-content">
     <header class="topbar">
@@ -66,10 +8,10 @@
         <p>Welcome back, {{ userName }}!</p>
       </div>
 
-      <button class="logout-btn" type="button">
-        /* (click)="logout()"> */
+      <!-- <button class="logout-btn" type="button"
+         (click)="logout()"> 
         Logout
-      </button>
+      </button> -->
     </header>
 
     <section class="welcome-banner">
