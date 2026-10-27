@@ -1,6 +1,7 @@
 
 import { Routes } from '@angular/router';
 import { authGuard } from './features/auth/auth.guard';
+import { Users } from './features/users/users';
 
 export const routes: Routes = [
   {
@@ -67,7 +68,8 @@ export const routes: Routes = [
         path: 'users',
         loadComponent: () =>
           import('./features/users/users')
-            .then(m => m.Users)
+            .then(m => m.Users),
+             canActivate: [authGuard]
       },
       {
         path: 'roles',

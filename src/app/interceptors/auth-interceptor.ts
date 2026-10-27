@@ -5,7 +5,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 debugger;
   // Login request par token zaroori nahi hai
   if (token && !req.url.endsWith('/api/auth/login')) {
-    debugger;
+   
     const authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`

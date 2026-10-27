@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject,ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService, User,Role, UpdateUserRequest} from '../../services/user.service';
 
@@ -12,9 +12,9 @@ import { UserService, User,Role, UpdateUserRequest} from '../../services/user.se
 })
 export class Users implements OnInit {
   private userService = inject(UserService);
+  private cdr = inject(ChangeDetectorRef);
   users: User[] = [];
   roles: Role[] = [];
-  
   searchText = '';
   loading = false;
   errorMessage = '';
@@ -30,43 +30,47 @@ export class Users implements OnInit {
 
   selectedRoleId = '';
 
-  ngOnInit(): void {
-    this.loadUsers();
-    this.loadRoles();
+  ngOnInit(): void { this.loadUsers();this.loadRoles();
   }
 
-  loadUsers(): void {
-    this.loading = true;
-    this.errorMessage = '';
-
-    this.userService.getUsers().subscribe({
-      next: (data) => {
-        this.users = data;
-        this.loading = false;
-      },
-      error: (error) => {
-        this.loading = false;
-        this.errorMessage =
-          error.status === 401
-            ? 'Login session expired. Please login again.'
-            : error.status === 403
-              ? 'Only Admin can manage users.'
-              : 'Unable to load users. Check API and token.';
+  loadUsers(): void {this.loading = true; this.errorMessage = '';
+    this.userService.getUsers().subscribe({ next: (data) => { this.users = data;this.loading = false;this.cdr.markForCheck(); },
+      error: (error) => {this.loading = false; this.cdr.markForCheck();this.errorMessage =error.status === 401 ? 'Login session expired. Please login again.': error.status === 403? 'Only Admin can manage users.': 'Unable to load users. Check API and token.';
       }
     });
   }
 
   loadRoles(): void {
-    this.userService.getRoles().subscribe({
-      next: (data) => {
-        this.roles = data;
-      },
-      error: () => {
-        this.errorMessage =
-          'Unable to load roles. Check GET /api/roles API.';
+  this.userService.getRoles().subscribe({
+    next: (data) => {
+      this.roles = data;
+      this.cdr.markForCheck();
+      console.log('Roles loaded:', data);
+    },
+    error: (error) => {
+      console.error('Roles API failed:', error.status, error);
+
+      if (error.status === 401) {
+        this.errorMessage = 'Login session expired. Please login again.';
+      } else if (error.status === 403) {
+        this.errorMessage = 'Only Admin can access roles.';
+      } else if (error.status === 404) {
+        this.errorMessage = 'GET /api/roles endpoint not found.';
+      } else {
+        this.errorMessage = 'Unable to load roles. Check API.';
       }
-    });
-  }
+
+      this.cdr.markForCheck();
+    }
+  });
+}
+  // loadRoles(): void {
+  //   this.userService.getRoles().subscribe({ next: (data) => {this.roles = data;},
+  //     error: () => {
+  //       this.errorMessage ='Unable to load roles. Check GET /api/roles API.';
+  //     }
+  //   });
+  // }
 get activeUsers(): number {
   return this.users.filter(user => user.isActive).length;
 }
@@ -81,44 +85,24 @@ get inactiveUsers(): number {
       return this.users;
     }
 
-    return this.users.filter(user =>
-      user.userName.toLowerCase().includes(search) ||
-      user.email.toLowerCase().includes(search) ||
-      user.roleName.toLowerCase().includes(search)
+    return this.users.filter(user =>user.userName.toLowerCase().includes(search) || user.email.toLowerCase().includes(search) || user.roleName.toLowerCase().includes(search)
     );
   }
 
-  startEdit(user: User): void {
-    this.editingId = user.id;
+  startEdit(user: User): void { this.editingId = user.id;this.editForm = {userName: user.userName, email: user.email, isActive: user.isActive };
 
-    this.editForm = {
-      userName: user.userName,
-      email: user.email,
-      isActive: user.isActive
-    };
-
-    this.selectedRoleId = user.roleId;
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.selectedRoleId = user.roleId; this.successMessage = ''; this.errorMessage = '';
   }
 
-  cancelEdit(): void {
-    this.editingId = null;
-    this.selectedRoleId = '';
+  cancelEdit(): void { this.editingId = null; this.selectedRoleId = '';
   }
 
   saveUser(user: User): void {
-    if (!this.editForm.userName.trim() ||
-        !this.editForm.email.trim()) {
-      this.errorMessage = 'Username and email are required.';
-      return;
-    }
+      if (!this.editForm.userName.trim() || !this.editForm.email.trim()) { this.errorMessage = 'Username and email are required.'; return;}
 
-    this.userService.updateUser(user.id, this.editForm).subscribe({
-      next: () => {
-        if (this.selectedRoleId !== user.roleId) {
-          this.saveRole(user.id);
-        } else {
+    this.userService.updateUser(user.id, this.editForm).subscribe({next: () => {
+        if (this.selectedRoleId !== user.roleId) { this.saveRole(user.id);}
+         else {
           this.finishSave('User updated successfully.');
         }
       },
@@ -129,9 +113,7 @@ get inactiveUsers(): number {
   }
 
   private saveRole(userId: string): void {
-    this.userService.changeRole(userId, {
-      roleId: this.selectedRoleId
-    }).subscribe({
+    this.userService.changeRole(userId, {roleId: this.selectedRoleId}).subscribe({
       next: () => {
         this.finishSave('User and role updated successfully.');
       },
